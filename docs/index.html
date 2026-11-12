@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXPLORE-CRAFT — The Automation Tower-Defense RTS</title>
+<meta name="description" content="EXPLORE-CRAFT is a hardened, Windows-ready fork of Mindustry: a factory-building game with tower-defense and RTS elements. Security-hardened, 421 tests, made by AARUTO.">
+<link rel="icon" type="image/png" href="assets/icon.png">
+<style>
+  :root{
+    --bg:#0d1017; --bg2:#141a24; --card:#1a2230; --line:#26303f;
+    --accent:#fc8140; --accent2:#ffb066; --text:#e8edf4; --muted:#9aa7b8;
+    --green:#54d68a; --radius:16px; --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden;
+  }
+  a{color:var(--accent2); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  code,pre{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+
+  /* nav */
+  header{
+    position:sticky; top:0; z-index:50; backdrop-filter:blur(12px);
+    background:rgba(13,16,23,.82); border-bottom:1px solid var(--line);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.5px}
+  .brand img{height:30px; width:30px; border-radius:7px}
+  .brand span{font-size:1.05rem}
+  .navlinks{display:flex; gap:26px; align-items:center}
+  .navlinks a{color:var(--muted); font-size:.92rem; font-weight:600}
+  .navlinks a:hover{color:var(--text); text-decoration:none}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:10px;
+    font-weight:700; font-size:.92rem; cursor:pointer; border:1px solid transparent; transition:.18s;
+  }
+  .btn-primary{background:var(--accent); color:#1a1206}
+  .btn-primary:hover{background:var(--accent2); text-decoration:none; transform:translateY(-1px)}
+  .btn-ghost{border-color:var(--line); color:var(--text); background:var(--card)}
+  .btn-ghost:hover{border-color:var(--accent); text-decoration:none}
+
+  /* hero */
+  .hero{position:relative; padding:90px 0 70px; text-align:center; overflow:hidden}
+  .hero::before{
+    content:""; position:absolute; inset:0; z-index:-1;
+    background:
+      radial-gradient(600px 300px at 50% -40px, rgba(252,129,64,.20), transparent 70%),
+      radial-gradient(800px 400px at 80% 10%, rgba(84,214,138,.06), transparent 70%);
+  }
+  .hero img.logo{width:min(680px,90%); height:auto; filter:drop-shadow(0 8px 40px rgba(252,129,64,.25)); margin-bottom:26px}
+  .hero h1{font-size:clamp(1.6rem,4vw,2.6rem); font-weight:800; letter-spacing:.5px; margin-bottom:14px}
+  .hero p.tag{color:var(--muted); font-size:clamp(1rem,2.2vw,1.25rem); max-width:680px; margin:0 auto 30px}
+  .hero .cta{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+  .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:34px}
+  .badge{
+    font-size:.78rem; font-weight:700; padding:6px 12px; border-radius:999px;
+    border:1px solid var(--line); background:var(--bg2); color:var(--muted);
+  }
+  .badge b{color:var(--accent2)}
+
+  /* sections */
+  section{padding:64px 0; border-top:1px solid var(--line)}
+  .eyebrow{color:var(--accent); font-weight:800; letter-spacing:2px; font-size:.8rem; text-transform:uppercase}
+  h2{font-size:clamp(1.5rem,3vw,2rem); font-weight:800; margin:8px 0 12px}
+  .lead{color:var(--muted); max-width:720px; margin-bottom:36px}
+
+  .grid{display:grid; gap:18px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; transition:.18s;
+  }
+  .card:hover{border-color:var(--accent); transform:translateY(-3px)}
+  .card .ico{
+    width:44px; height:44px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    background:rgba(252,129,64,.12); color:var(--accent); margin-bottom:14px;
+  }
+  .card h3{font-size:1.08rem; margin-bottom:8px}
+  .card p{color:var(--muted); font-size:.94rem}
+
+  /* stats */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:36px}
+  .stat{background:var(--bg2); border:1px solid var(--line); border-radius:var(--radius); padding:22px; text-align:center}
+  .stat .num{font-size:2rem; font-weight:800; color:var(--accent2)}
+  .stat .lbl{color:var(--muted); font-size:.85rem; margin-top:4px}
+
+  table{width:100%; border-collapse:collapse; background:var(--card); border-radius:var(--radius); overflow:hidden; border:1px solid var(--line)}
+  th,td{padding:13px 16px; text-align:left; border-bottom:1px solid var(--line); font-size:.92rem}
+  th{background:var(--bg2); color:var(--accent2); font-weight:700}
+  tr:last-child td{border-bottom:none}
+  td:first-child{font-weight:600; white-space:nowrap}
+
+  /* code */
+  .codeblock{background:#0a0d13; border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px}
+  .codeblock .bar{display:flex; align-items:center; gap:8px; padding:10px 16px; background:var(--bg2); border-bottom:1px solid var(--line); font-size:.8rem; color:var(--muted)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  pre{padding:18px 16px; overflow-x:auto; font-size:.86rem; line-height:1.7; color:#d6e0ec}
+  pre .c{color:#6b7a8d}
+  pre .k{color:var(--accent2)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:48px 0 60px; background:var(--bg2)}
+  .foot-grid{display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; align-items:flex-start}
+  .foot-grid .col{max-width:420px}
+  .foot-grid h4{margin-bottom:10px; font-size:1rem}
+  .foot-grid p{color:var(--muted); font-size:.9rem}
+  .madeby{margin-top:36px; text-align:center; font-weight:800; letter-spacing:2px; color:var(--accent)}
+  .small{color:var(--muted); font-size:.82rem; text-align:center; margin-top:10px}
+
+  @media(max-width:820px){
+    .grid.cols-3{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .navlinks a:not(.btn){display:none}
+  }
+  @media(max-width:560px){
+    .grid.cols-3,.grid.cols-2{grid-template-columns:1fr}
+    .hero{padding:60px 0 40px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand"><img src="assets/icon.png" alt="EXPLORE-CRAFT icon"><span>EXPLORE-CRAFT</span></div>
+      <div class="navlinks">
+        <a href="#features">Features</a>
+        <a href="#security">Security</a>
+        <a href="#build">Build</a>
+        <a class="btn btn-ghost" href="https://github.com/AARUTO347/EXPLORE-CRAFT" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <img class="logo" src="assets/logo.png" alt="EXPLORE-CRAFT logo">
+    <h1>Build. Defend. Expand.</h1>
+    <p class="tag">The automation tower-defense RTS — a security-hardened, Windows-ready fork of Mindustry. Create elaborate supply chains, command units, and defend your core from waves of enemies.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#build">Build &amp; Play</a>
+      <a class="btn btn-ghost" href="https://github.com/AARUTO347/EXPLORE-CRAFT" target="_blank" rel="noopener">View Source</a>
+    </div>
+    <div class="badges">
+      <span class="badge">License <b>GPL-3.0</b></span>
+      <span class="badge">Java <b>17</b></span>
+      <span class="badge">Tests <b>421 passing</b></span>
+      <span class="badge">Windows · Linux · macOS</span>
+      <span class="badge">MADE BY <b>AARUTO</b></span>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">Gameplay</div>
+    <h2>A factory RTS that scales with you</h2>
+    <p class="lead">Mine resources, build production lines, feed ammo to your turrets, and assault enemy bases — solo, co-op, or team PvP.</p>
+    <div class="grid cols-3">
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+        <h3>Factory building</h3>
+        <p>Create elaborate supply chains with production blocks, conveyors, and advanced materials. Optimize with coolant and lubricant.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></div>
+        <h3>Tower defense</h3>
+        <p>Defend your structures from waves of enemies. Distribute liquids and fight fires, flier raids, and constant pressure.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+        <h3>RTS command</h3>
+        <p>Produce a wide variety of units, set up assembly lines, and command armies to capture fully functional enemy bases.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 21v-2a5 5 0 015-5h4a5 5 0 015 5v2M16 21v-1a4 4 0 014-4"/></svg></div>
+        <h3>Cross-platform multiplayer</h3>
+        <p>Play co-op with friends or challenge them in team-based PvP across platforms, with a dedicated headless server.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg></div>
+        <h3>Campaign &amp; mods</h3>
+        <p>Progress through a full campaign and extend the game with a rich modding API and community content.</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+        <h3>Native Windows</h3>
+        <p>One-command build and run via <code>run-windows.bat</code>, with a portable JDK 17 and a verified Gradle wrapper.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <div class="eyebrow">Hardened fork</div>
+    <h2>Security &amp; stability, verified</h2>
+    <p class="lead">EXPLORE-CRAFT adds three phases of defensive hardening on top of upstream Mindustry, each backed by automated tests and live client/server smoke runs on Windows.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">421</div><div class="lbl">Automated tests passing</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">Hardening phases</div></div>
+      <div class="stat"><div class="num">0</div><div class="lbl">Test failures</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Smoke assertions pass</div></div>
+    </div>
+    <div class="grid cols-3" style="margin-bottom:36px">
+      <div class="card"><h3>Phase 1 · Mod &amp; script safety</h3><p>Path-traversal-safe mod names, escaped script injection, sandboxed <code>require</code> roots, and secure randomness.</p></div>
+      <div class="card"><h3>Phase 2 · Server hardening</h3><p>Safer admin/whitelist handling, ordered connection handshakes, menu nonce snapshots, bounded command socket, atomic verified updates.</p></div>
+      <div class="card"><h3>Phase 3 · Untrusted input</h3><p>Bounded save chunks, PNG framing validation before native decode, LZ4 packet limits, and stream/asset transfer budgets.</p></div>
+    </div>
+    <table>
+      <tr><th>Boundary</th><th>Limit</th></tr>
+      <tr><td>Save chunk / embedded binary</td><td>256 MiB</td></tr>
+      <tr><td>Downloaded asset / network texture</td><td>64 MiB</td></tr>
+      <tr><td>Asset transfer &amp; in-flight streams</td><td>256 MiB · 16 active</td></tr>
+      <tr><td>Map cells</td><td>4,194,304</td></tr>
+      <tr><td>Decoded packet body</td><td>32,768 bytes</td></tr>
+      <tr><td>PNG dimensions</td><td>2000 / axis (editor 800)</td></tr>
+    </table>
+    <p class="small" style="text-align:left;margin-top:14px">Limits are explicit safety policies; exceptionally large custom content may be rejected with an explanatory error. Full record in <code>UPGRADE_PLAN.md</code>.</p>
+  </div>
+</section>
+
+<section id="build">
+  <div class="wrap">
+    <div class="eyebrow">Get started</div>
+    <h2>Build &amp; run</h2>
+    <p class="lead">Requires JDK 17. Clone the repository, then use the one-command Windows launcher or Gradle on any platform.</p>
+    <div class="grid cols-2">
+      <div>
+        <div class="codeblock">
+          <div class="bar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span>&nbsp;Windows</div>
+<pre><span class="c">REM build desktop + server JARs</span>
+run-windows.bat <span class="k">dist</span>
+
+<span class="c">REM run the game</span>
+run-windows.bat <span class="k">jar</span>
+
+<span class="c">REM run the dedicated server</span>
+run-windows.bat <span class="k">server-jar</span>
+
+<span class="c">REM run the test suite</span>
+run-windows.bat <span class="k">test</span></pre>
+        </div>
+      </div>
+      <div>
+        <div class="codeblock">
+          <div class="bar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span>&nbsp;Gradle (any platform)</div>
+<pre><span class="c"># build desktop JAR</span>
+./gradlew <span class="k">desktop:dist</span>
+
+<span class="c"># build server JAR</span>
+./gradlew <span class="k">server:dist</span>
+
+<span class="c"># run tests</span>
+./gradlew <span class="k">tests:test</span>
+
+<span class="c"># run the game</span>
+./gradlew <span class="k">desktop:run</span></pre>
+        </div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:8px">Desktop output: <code>desktop/build/libs/ExploreCraft.jar</code> · Server output: <code>server/build/libs/server-release.jar</code></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="col">
+        <div class="brand" style="margin-bottom:12px"><img src="assets/icon.png" alt=""><span>EXPLORE-CRAFT</span></div>
+        <p>A hardened, rebranded fork of Mindustry focused on security, stability, and a smooth native Windows experience.</p>
+      </div>
+      <div class="col">
+        <h4>Attribution &amp; License</h4>
+        <p>Derived from <a href="https://github.com/Anuken/Mindustry" target="_blank" rel="noopener">Mindustry</a> by Anuken and contributors. Distributed under the <strong>GNU GPL v3.0</strong>. Original copyright and license notices preserved. Internal package names, save paths, and the Steam app ID are retained for compatibility.</p>
+      </div>
+      <div class="col">
+        <h4>Links</h4>
+        <p>
+          <a href="https://github.com/AARUTO347/EXPLORE-CRAFT" target="_blank" rel="noopener">Source on GitHub</a><br>
+          <a href="https://github.com/AARUTO347/EXPLORE-CRAFT/blob/main/UPGRADE_PLAN.md" target="_blank" rel="noopener">Upgrade plan</a><br>
+          <a href="https://github.com/Anuken/Mindustry" target="_blank" rel="noopener">Upstream Mindustry</a>
+        </p>
+      </div>
+    </div>
+    <div class="madeby">MADE BY AARUTO</div>
+    <div class="small">© 2026 AARUTO · EXPLORE-CRAFT · GPL-3.0</div>
+  </div>
+</footer>
+
+</body>
+</html>
